@@ -22,7 +22,7 @@ model Game {
   id      String    @id @default(cuid())
   url     String
   targets Targets[]
-  name NameOnGame[]
+  names NameOnGame[]
 }
 
 model Targets {
