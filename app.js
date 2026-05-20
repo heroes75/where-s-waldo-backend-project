@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const {createServer} = require('node:http')
 const { Server } = require('socket.io')
+const game = require('./routes/gameRouter')
 
 
 const app = express()
@@ -20,9 +21,11 @@ io.on('connection', (socket) => {
     })
     console.log('woupi')
 })
-
 app.use(cors())
-app.use(express.urlencoded({extended: true}))
+app.use(express.json());
+app.use(express.urlencoded({extended: false}))
+
+app.use('/game', game)
 
 server.listen(process.env.PORT, (err) => {
     if(err) console.error(err)
