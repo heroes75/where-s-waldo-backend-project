@@ -4,6 +4,7 @@ const cors = require('cors')
 const {createServer} = require('node:http')
 const { Server } = require('socket.io')
 const game = require('./routes/gameRouter')
+const leadboardRouter = require('./routes/leadboardRouter')
 
 
 const app = express()
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 
 app.use('/game', game)
+app.use('/leadboard', leadboardRouter)
 
 server.listen(process.env.PORT, (err) => {
     if(err) console.error(err)

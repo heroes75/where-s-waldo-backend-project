@@ -14,41 +14,35 @@ datasource db {
 
 model Record {
   id        Int      @id @default(autoincrement())
-  time      String
-  createdAt DateTime
+  time      Float
+  name      String   @default("Anonymous")
+  game      Game     @relation(references: [id], fields: [gameId], onDelete: Cascade)
+  gameId    String
+  createdAt DateTime @default(now())
 }
 
 model Game {
   id      String    @id @default(cuid())
   url     String
-  targets Targets[]
-  names NameOnGame[]
+  records Record[]
+  names   Targets[]
+}
+
+model Name {
+  id    Int       @id @default(autoincrement())
+  name  String
+  url   String
+  games Targets[]
 }
 
 model Targets {
   id     Int    @id @default(autoincrement())
-  game   Game   @relation(references: [id], fields: [gameId])
+  name   Name   @relation(references: [id], fields: [nameId], onDelete: Cascade)
+  nameId Int
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
   gameId String
   x      Float
   y      Float
-  name   Name @relation(fields: [nameId], references: [id])
-  nameId Int
-}
 
-model Name {
-  id       Int     @id @default(autoincrement())
-  name     String
-  url      String
-  // target   Targets @relation(fields: [targetId], references: [id])
-  // targetId Int     @unique
-  target Targets[]
-  games NameOnGame[]
-}
-
-model NameOnGame {
-  name Name @relation(references: [id], fields: [nameId])
-  nameId Int
-  game Game @relation(fields: [gameId], references: [id])
-  gameId String
   @@unique([nameId, gameId])
 }

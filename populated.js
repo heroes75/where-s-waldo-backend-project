@@ -9,134 +9,84 @@ const cloudinary = require("cloudinary").v2;
     });
 
     console.log('start of populating')
-    // const game = await prisma.game.create({
-    //     data: {
-    //         url: await cloudinary.url("level1-scene_aut0sq"),
-    //         name: {
-    //             create: {
-    //                 data: [
-    //                     {
-    //                         name: 'Waldo',
-    //                         url: await cloudinary.url("waldo", {
-    //                             fetch_format: "auto",
-    //                         }),
-    //                         target: {
-    //                             create: {
-    //                                 x: 51.128,
-    //                                 y: 49.852,
-    //                                 nameId: 1
-    //                             },
-    //                         },
-    //                     },
-    //                     {
-    //                         name: 'Odlaw',
-    //                         url: await cloudinary.url('odlaw', {
-    //                             fetch_format: 'auto',
-    //                             quality: 'auto',
-    //                         }),
-    //                         target: {
-    //                             create: {
-    //                                 x: 24.511,
-    //                                 y: 49.641,
-    //                                 nameId: 2
-    //                             }
-    //                         }
-    //                     },
-    //                     {
-    //                         name: 'Wizard',
-    //                         url: await cloudinary.url('wizard'),
-    //                         target: {
-    //                             create: {
-    //                                 x: 62.516,
-    //                                 y: 49.308,
-    //                                 nameId: 3
-    //                             }
-    //                         }
-    //                     }
-    //                 ],
-    //             },
-    //         },
-    //     },
-    // });
-
-    // const game = await prisma.game.create({
-    //     data: {
-    //         url: await cloudinary.url("level1-scene_aut0sq", {
-    //             fetch_format: "auto",
-    //             quality: "auto",
-    //         }),
-    //         names: {
-    //             create: [
-    //                 {
-    //                     name: {
-    //                         create: {
-    //                             name: "Waldo",
-    //                             url: await cloudinary.url("waldo"),
-    //                             target: {
-    //                                 create: {
-    //                                     x: 51.128,
-    //                                     y: 49.852,
-    //                                 },
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //                 {
-    //                     name: {
-    //                         create: {
-    //                             name: "Odlaw",
-    //                             url: await cloudinary.url("odlaw"),
-    //                             target: {
-    //                                 create: {
-    //                                     x: 24.511,
-    //                                     y: 49.641,
-    //                                 },
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //                 {
-    //                     name: {
-    //                         create: {
-    //                             name: "Wizard",
-    //                             url: await cloudinary.url("Wizard"),
-    //                             target: {
-    //                                 create: {
-    //                                     x: 62.516,
-    //                                     y: 49.308,
-    //                                 },
-    //                             },
-    //                         },
-    //                     },
-    //                 },
-    //             ],
-    //         },
-    //     },
-    //     include: {
-    //         targets: true
-    //     }
-    // });
-
-    // const names = await prisma.nameOnGame.create({
-    //     data: 
-    //         {
-    //             name: {connect: {id: 6}},
-    //             game: {
-    //                 connect: {id: 'cmpd6dbev0000uuuduku7jeiu'}
-    //             }
-    //         }
+    
         
-    // })
-    const games = await prisma.game.findMany({
-        include: {
+    const game = await prisma.game.create({
+        data: {
+            url: await cloudinary.url('level2-scene_con9l9', {
+                fetch_format: 'auto',
+                quality: 'auto',
+            }),
             names: {
-                include: {
-                    name: true
-                }
+                create: [
+                    {
+                        x: 90.009,
+                        y: 6.313,
+                        name: {
+                            connect: {
+                                id: 8
+                            }
+                        }
+                    },
+                    {
+                        x: 91.834,
+                        y: 57.848,
+                        name: {
+                            connect: {
+                                id: 9
+                            }
+                        }
+                    },
+                    {
+                        x: 29.440,
+                        y: 40.673,
+                        name: {
+                            connect: {
+                                id: 10
+                            }
+                        }
+                    },
+                    {
+                        x: 28.134,
+                        y: 66.568,
+                        name: {
+                            create: {
+                                name: 'Wenda',
+                                url: await cloudinary.url('Wenda', {
+                                    fetch_format: 'auto',
+                                    quality:'auto'
+                                })
+                            }
+                        }
+                    }
+                ]
             }
         }
     })
-    console.log('games:', games[0].names.map(name => name.name))
+
+    
+
+    
+
+    // const targets = await prisma.targets.createManyAndReturn({
+    //     data: [
+    //         {
+    //         x: 24.511,
+    //         y: 49.641,
+    //         nameId:  9,
+    //         gameId: 'cmpeul32y0000yyud7tymzxse',
+            
+    //     },
+    //     {
+    //         x: 62.516,
+    //         y: 49.308,
+    //         nameId: 10,
+    //         gameId: 'cmpeul32y0000yyud7tymzxse',
+            
+    //     }
+    // ]
+    // })
+    // console.log('games:', games[0].names.map(name => name.name))
     console.log('end of populating')
 
 })();
