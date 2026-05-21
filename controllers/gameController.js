@@ -20,7 +20,6 @@ async function getGame(req, res) {
                 include: {
                     name: true,
                     gameId: false,
-                    nameId: true,
                 },
             },
         },
