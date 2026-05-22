@@ -4,6 +4,7 @@ const { prisma } = require("../lib/prisma")
 async function addRecord(req, res) {
     const {id} = req.params
     const {time, name} = req.body
+    console.log('{time, name}:', {time, name})
     const record = await prisma.record.create({
         data: {
             time: +time,
@@ -28,7 +29,7 @@ async function getAllRecord(req, res) {
         }
     })
 
-    res.json(records)
+    res.json({records})
 }
 module.exports = {
     addRecord,

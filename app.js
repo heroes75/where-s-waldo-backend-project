@@ -16,7 +16,7 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-    socket.on('test', (msg) => {
+    socket.on('connect', (msg) => {
         console.log('msg:', msg)
         console.log('no no no')
     })
