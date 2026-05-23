@@ -15,12 +15,25 @@ const io = new Server(server, {
     }
 })
 
+function totalCount() {
+    return io.of("/").sockets.size;
+}
+
+function clientCountInMultiplayer(id) {
+    return io.of("/").adapter.rooms.get(id)?.size || 0;
+}
+
 io.on('connection', (socket) => {
-    socket.on('connect', (msg) => {
+    
+    socket.join('multiplayer')
+    socket.on('multiplayer', (id, msg) => {
+        console.log('id:', id);
         console.log('msg:', msg)
-        console.log('no no no')
+        console.log('clientCountInMultiplayer', clientCountInMultiplayer('multiplayer'))
     })
-    console.log('woupi')
+    const ipAddress = socket.handshake.address
+    console.log(ipAddress)
+    console.log('totalCount', totalCount())
 })
 app.use(cors())
 app.use(express.json());
