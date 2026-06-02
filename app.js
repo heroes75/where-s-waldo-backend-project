@@ -26,45 +26,57 @@ function clientCountInMultiplayer(id) {
     return io.of("/").adapter.rooms.get(id)?.size || 0;
 }
 
-io.on('connection', (socket) => {
+io.of('/').on('connection', (socket) => {
     console.log('user connected:')
 
-    socket.join('multiplayer')
+
     console.log('lobby:', lobby.size)
-    if (lobby.size  === 0) {
+        if (lobby.size  === 0) {
         var id = randomUUID() + ''
         roomId.id = id
+        console.log('socket.id:', socket.id)
         socket.broadcast.emit('lobby', { msg: 'Please Wait...', nextGame: null, id})
         socket.emit('lobby', { msg: 'Please Wait...', nextGame: null, id})
-        socket.join(id)
-        io.to(id).emit('welcome')
         lobby.add(socket.id)
         console.log('lobby:', lobby.size)
     } else if(lobby.size  === 1) {
+        console.log('socket.id:', socket.id)
         lobby.add(socket.id)
         socket.broadcast.emit('lobby', {msg: 'you\'re connected now to a player', nextGame: '/multiplayer/' + roomId.id + '/cmpeul32y0000yyud7tymzxse', id: roomId.id})
         socket.emit('lobby', {msg: 'you\'re connected now to a player', id: roomId.id, nextGame: '/multiplayer/' + roomId.id + '/cmpeul32y0000yyud7tymzxse', id: roomId.id})
-        socket.join(roomId.id)
-        io.to(roomId.id).emit('welcome')
         console.log('lobby:', lobby.size)
         // io.to(socket.id).emit('game', 'New Game');
     }
+
+    
+    
 
     socket.on('disconnect', () => {
         console.log('disconnected:')
         lobby.delete(socket.id)
     })
-    
-    // socket.join('multiplayer')
-    // socket.on('multiplayer', (id, msg) => {
-    //     console.log('id:', id);
-    //     console.log('msg:', msg)
-    //     console.log('clientCountInMultiplayer', clientCountInMultiplayer('multiplayer'))
-    // })
-    // const ipAddress = socket.handshake.address
-    // console.log(ipAddress)
-    // console.log('totalCount', totalCount())
 })
+
+
+io.of('/multiplayer').on('connection', socket => {
+    console.log('user connected to plays:')
+        console.log('socket.id:', socket.id)
+    socket.on('join-room', (roomId, userId) => {
+        console.log('roomId, userId:', roomId, userId)
+        socket.broadcast.emit(userId)
+        socket.join(roomId)
+        socket.emit('multiplayer', 'message test')
+        socket.on('multiplayer', msg => {
+            socket.broadcast.emit('multiplayer', msg)
+        })
+        socket.on(roomId, msg => {
+            socket.broadcast.emit(roomId, msg)
+        })
+        socket.to(roomId).emit('connecyref')
+    })
+})
+
+
 app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended: false}))
