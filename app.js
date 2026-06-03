@@ -28,8 +28,6 @@ function clientCountInMultiplayer(id) {
 
 io.of('/').on('connection', (socket) => {
     console.log('user connected:')
-
-
     console.log('lobby:', lobby.size)
         if (lobby.size  === 0) {
         var id = randomUUID() + ''
@@ -48,9 +46,6 @@ io.of('/').on('connection', (socket) => {
         // io.to(socket.id).emit('game', 'New Game');
     }
 
-    
-    
-
     socket.on('disconnect', () => {
         console.log('disconnected:')
         lobby.delete(socket.id)
@@ -63,9 +58,7 @@ io.of('/multiplayer').on('connection', socket => {
         console.log('socket.id:', socket.id)
     socket.on('join-room', (roomId, userId) => {
         console.log('roomId, userId:', roomId, userId)
-        socket.broadcast.emit(userId)
         socket.join(roomId)
-        socket.emit('multiplayer', 'message test')
         socket.on('multiplayer', msg => {
             socket.broadcast.emit('multiplayer', msg)
         })
@@ -75,7 +68,15 @@ io.of('/multiplayer').on('connection', socket => {
         socket.on(roomId + '-target', targets => {
             socket.broadcast.emit(roomId + '-target', targets)
         })
-        socket.to(roomId).emit('connecyref')
+        socket.on(roomId + '-connect', isConnected => {
+            console.log('isConnected:', isConnected)
+            socket.broadcast.emit(roomId + '-connect', isConnected)
+        })
+        socket.to(roomId).emit('connected')
+    })
+
+    socket.on('disconnect', () => {
+        console.log(`player disconnect:`)
     })
 })
 
