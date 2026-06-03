@@ -69,8 +69,11 @@ io.of('/multiplayer').on('connection', socket => {
         socket.on('multiplayer', msg => {
             socket.broadcast.emit('multiplayer', msg)
         })
-        socket.on(roomId, msg => {
-            socket.broadcast.emit(roomId, msg)
+        socket.on(roomId, (targets, isFound, name) => {
+            socket.broadcast.emit(roomId, targets, isFound, name)
+        })
+        socket.on(roomId + '-target', targets => {
+            socket.broadcast.emit(roomId + '-target', targets)
         })
         socket.to(roomId).emit('connecyref')
     })
