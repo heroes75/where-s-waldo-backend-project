@@ -66,18 +66,21 @@ io.of('/multiplayer').on('connection', socket => {
             socket.broadcast.emit(roomId, targets, isFound, name)
         })
         socket.on(roomId + '-target', targets => {
+            console.log('targets:', targets)
             socket.broadcast.emit(roomId + '-target', targets)
         })
         socket.on(roomId + '-connect', isConnected => {
             console.log('isConnected:', isConnected)
             socket.broadcast.emit(roomId + '-connect', isConnected)
         })
+        socket.on('disconnect', () => {
+            console.log(`player disconnect:`)
+            socket.broadcast.emit(roomId + '-connect', false)
+        })
         socket.to(roomId).emit('connected')
     })
 
-    socket.on('disconnect', () => {
-        console.log(`player disconnect:`)
-    })
+    
 })
 
 
