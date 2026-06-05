@@ -6,6 +6,7 @@ const { Server } = require('socket.io')
 const game = require('./routes/gameRouter')
 const leadboardRouter = require('./routes/leadboardRouter')
 const { randomUUID } = require('node:crypto')
+const { prisma } = require('./lib/prisma')
 
 
 const app = express()
@@ -26,22 +27,29 @@ function clientCountInMultiplayer(id) {
     return io.of("/").adapter.rooms.get(id)?.size || 0;
 }
 
-io.of('/').on('connection', (socket) => {
+io.of('/').on('connection', async (socket) => {
     console.log('user connected:')
     console.log('lobby:', lobby.size)
         if (lobby.size  === 0) {
-        var id = randomUUID() + ''
-        roomId.id = id
         console.log('socket.id:', socket.id)
-        socket.broadcast.emit('lobby', { msg: 'Please Wait...', nextGame: null, id})
-        socket.emit('lobby', { msg: 'Please Wait...', nextGame: null, id})
+        socket.broadcast.emit('lobby', { msg: 'Please Wait...', nextGame: null})
+        socket.emit('lobby', { msg: 'Please Wait...', nextGame: null})
         lobby.add(socket.id)
         console.log('lobby:', lobby.size)
     } else if(lobby.size  === 1) {
         console.log('socket.id:', socket.id)
         lobby.add(socket.id)
-        socket.broadcast.emit('lobby', {msg: 'you\'re connected now to a player', nextGame: '/multiplayer/' + roomId.id + '/cmpeul32y0000yyud7tymzxse', id: roomId.id})
-        socket.emit('lobby', {msg: 'you\'re connected now to a player', id: roomId.id, nextGame: '/multiplayer/' + roomId.id + '/cmpeul32y0000yyud7tymzxse', id: roomId.id})
+        const roomId = randomUUID()
+        const allGame = await prisma.game.findMany({
+            select: {
+                id: true,
+                url: false
+            }
+        })
+        const allGameId = allGame.map(game => game.id)
+        const selectedId = allGameId[Math.floor(Math.random() * (allGameId.length))]
+        socket.broadcast.emit('lobby', {msg: 'you\'re connected now to a player', nextGame: '/multiplayer/' + roomId + '/' + selectedId})
+        socket.emit('lobby', {msg: 'you\'re connected now to a player', nextGame: '/multiplayer/' + roomId + '/' + selectedId})
         console.log('lobby:', lobby.size)
         // io.to(socket.id).emit('game', 'New Game');
     }

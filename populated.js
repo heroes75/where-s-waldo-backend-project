@@ -13,15 +13,15 @@ const cloudinary = require("cloudinary").v2;
         
     const game = await prisma.game.create({
         data: {
-            url: await cloudinary.url('level2-scene_con9l9', {
+            url: await cloudinary.url('level12-scene_gb0bgc', {
                 fetch_format: 'auto',
                 quality: 'auto',
             }),
             names: {
                 create: [
                     {
-                        x: 90.009,
-                        y: 6.313,
+                        x: 27.908,
+                        y: 33.406,
                         name: {
                             connect: {
                                 id: 8
@@ -29,8 +29,8 @@ const cloudinary = require("cloudinary").v2;
                         }
                     },
                     {
-                        x: 91.834,
-                        y: 57.848,
+                        x: 59.601,
+                        y: 64.312,
                         name: {
                             connect: {
                                 id: 9
@@ -38,8 +38,8 @@ const cloudinary = require("cloudinary").v2;
                         }
                     },
                     {
-                        x: 29.440,
-                        y: 40.673,
+                        x: 61.182,
+                        y: 86.225,
                         name: {
                             connect: {
                                 id: 10
@@ -47,15 +47,11 @@ const cloudinary = require("cloudinary").v2;
                         }
                     },
                     {
-                        x: 28.134,
-                        y: 66.568,
+                        x: 25.081,
+                        y: 72.199,
                         name: {
-                            create: {
-                                name: 'Wenda',
-                                url: await cloudinary.url('Wenda', {
-                                    fetch_format: 'auto',
-                                    quality:'auto'
-                                })
+                            connect: {
+                                id: 11,
                             }
                         }
                     }
