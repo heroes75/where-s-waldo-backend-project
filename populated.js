@@ -13,48 +13,48 @@ const cloudinary = require("cloudinary").v2;
         
     const game = await prisma.game.create({
         data: {
-            url: await cloudinary.url('level12-scene_gb0bgc', {
+            url: await cloudinary.url('level6-scene_zikahp', {
                 fetch_format: 'auto',
                 quality: 'auto',
             }),
             names: {
                 create: [
                     {
-                        x: 27.908,
-                        y: 33.406,
+                        x: 16.284,
+                        y: 84.633,
                         name: {
                             connect: {
                                 id: 8
                             }
                         }
                     },
-                    {
-                        x: 59.601,
-                        y: 64.312,
-                        name: {
-                            connect: {
-                                id: 9
-                            }
-                        }
-                    },
-                    {
-                        x: 61.182,
-                        y: 86.225,
-                        name: {
-                            connect: {
-                                id: 10
-                            }
-                        }
-                    },
-                    {
-                        x: 25.081,
-                        y: 72.199,
-                        name: {
-                            connect: {
-                                id: 11,
-                            }
-                        }
-                    }
+                    // {
+                    //     x: 31.070,
+                    //     y: 63.979,
+                    //     name: {
+                    //         connect: {
+                    //             id: 9
+                    //         }
+                    //     }
+                    // },
+                    // {
+                    //     x: 73.572,
+                    //     y: 86.286,
+                    //     name: {
+                    //         connect: {
+                    //             id: 10
+                    //         }
+                    //     }
+                    // },
+                    // {
+                    //     x: 28.897,
+                    //     y: 94.467,
+                    //     name: {
+                    //         connect: {
+                    //             id: 11,
+                    //         }
+                    //     }
+                    // }
                 ]
             }
         }

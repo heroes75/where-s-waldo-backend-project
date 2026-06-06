@@ -26,7 +26,7 @@ async function getGame(req, res) {
 }
 
 async function verifyTargets(req, res) {
-    const r = 2.5;
+    const r = 2.85;
     const { id } = req.params;
     const { x, y, nameId } = req.body;
     const target = await prisma.targets.findUnique({
