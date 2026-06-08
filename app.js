@@ -27,7 +27,10 @@ function clientCountInMultiplayer(id) {
     return io.of("/").adapter.rooms.get(id)?.size || 0;
 }
 
+
+
 io.of('/').on('connection', async (socket) => {
+    io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
     console.log('user connected:')
     console.log('lobby:', lobby.size)
         if (lobby.size  === 0) {
@@ -58,12 +61,15 @@ io.of('/').on('connection', async (socket) => {
         console.log('disconnected:')
         lobby.delete(socket.id)
     })
+        io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0) - 1)
+
 })
 
 
 io.of('/multiplayer').on('connection', socket => {
     console.log('user connected to plays:')
         console.log('socket.id:', socket.id)
+    io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
     socket.on('join-room', (roomId, userId) => {
         console.log('roomId, userId:', roomId, userId)
         socket.join(roomId)
@@ -83,6 +89,7 @@ io.of('/multiplayer').on('connection', socket => {
         })
         socket.on('disconnect', () => {
             console.log(`player disconnect:`)
+            io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
             socket.broadcast.emit(roomId + '-connect', false)
         })
         socket.to(roomId).emit('connected')
