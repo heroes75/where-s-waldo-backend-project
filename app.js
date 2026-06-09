@@ -61,7 +61,7 @@ io.of('/').on('connection', async (socket) => {
         console.log('disconnected:')
         lobby.delete(socket.id)
     })
-        io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0) - 1)
+    io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0) - 1)
 
 })
 
