@@ -11,7 +11,7 @@
   "name": "where-s-waldo-backend-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "devDependencies": {
     "dotenv": "^17.4.2",
     "prisma": "^7.8.0"
