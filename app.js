@@ -71,9 +71,8 @@ io.of('/multiplayer').on('connection', socket => {
     console.log('user connected to plays:')
         console.log('socket.id:', socket.id)
     io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
-    socket.on('join-room', (roomId, userId) => {
-        console.log('roomId, userId:', roomId, userId)
-        socket.join(roomId)
+    socket.on('join-room', (roomId) => {
+        console.log('roomId', roomId)
         socket.on('multiplayer', msg => {
             socket.broadcast.emit('multiplayer', msg)
         })
