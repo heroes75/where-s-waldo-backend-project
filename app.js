@@ -13,9 +13,9 @@ const app = express()
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", 'http://127.0.0.1:5173', 'https://where-s-waldo-frontend-project.vercel.app', "https://where-s-waldo-frontend-project-git-main-heroes75s-projects.vercel.app", "https://where-s-waldo-frontend-project-9fp1w6j08-heroes75s-projects.vercel.app"]
+        origin: ["http://localhost:5173", 'http://127.0.0.1:5173', 'https://where-s-waldo-frontend-project.vercel.app', "https://where-s-waldo-frontend-project-git-main-heroes75s-projects.vercel.app", "https://where-s-waldo-frontend-project-9fp1w6j08-heroes75s-projects.vercel.app"],
+        method: ['GET', 'POST'],
     },
-    method: ['GET', 'POST'],
 })
 const lobby = new Set()
 const roomId = {id: ''}
