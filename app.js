@@ -14,7 +14,9 @@ const server = createServer(app)
 const io = new Server(server, {
     cors: {
         origin: ["http://localhost:5173/", 'http://127.0.0.1:5173', 'https://where-s-waldo-frontend-project.vercel.app', process.env.FRONTEND_API_1, process.env.FRONTEND_API_2]
-    }
+    },
+    transports: ['websocket'],
+    upgrade: 'false'
 })
 const lobby = new Set()
 const roomId = {id: ''}
@@ -92,7 +94,7 @@ io.of('/multiplayer').on('connection', socket => {
             io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
             socket.broadcast.emit(roomId + '-connect', false)
         })
-        socket.to(roomId).emit('connected')
+        // socket.to(roomId).emit('connected')
     })
 
     
