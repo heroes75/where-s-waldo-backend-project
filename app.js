@@ -15,6 +15,7 @@ const io = new Server(server, {
     cors: {
         origin: ["http://localhost:5173/", 'http://127.0.0.1:5173', 'https://where-s-waldo-frontend-project.vercel.app', process.env.FRONTEND_API_1, process.env.FRONTEND_API_2]
     },
+    method: ['GET', 'POST'],
 })
 const lobby = new Set()
 const roomId = {id: ''}
