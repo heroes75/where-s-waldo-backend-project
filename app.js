@@ -33,15 +33,11 @@ function clientCountInMultiplayer(id) {
 io.of('/').on('connection', async (socket) => {
     io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
     console.log('user connected:')
-    console.log('lobby:', lobby.size)
         if (lobby.size  === 0) {
-        console.log('socket.id:', socket.id)
         socket.broadcast.emit('lobby', { msg: 'Please Wait...', nextGame: null})
         socket.emit('lobby', { msg: 'Please Wait...', nextGame: null})
         lobby.add(socket.id)
-        console.log('lobby:', lobby.size)
     } else if(lobby.size  === 1) {
-        console.log('socket.id:', socket.id)
         lobby.add(socket.id)
         const roomId = randomUUID()
         const allGame = await prisma.game.findMany({
@@ -54,8 +50,6 @@ io.of('/').on('connection', async (socket) => {
         const selectedId = allGameId[Math.floor(Math.random() * (allGameId.length))]
         socket.broadcast.emit('lobby', {msg: 'you\'re connected now to a player', nextGame: '/multiplayer/' + roomId + '/' + selectedId})
         socket.emit('lobby', {msg: 'you\'re connected now to a player', nextGame: '/multiplayer/' + roomId + '/' + selectedId})
-        console.log('lobby:', lobby.size)
-        // io.to(socket.id).emit('game', 'New Game');
     }
 
     socket.on('disconnect', () => {
@@ -69,10 +63,8 @@ io.of('/').on('connection', async (socket) => {
 
 io.of('/multiplayer').on('connection', socket => {
     console.log('user connected to plays:')
-        console.log('socket.id:', socket.id)
     io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
     socket.on('join-room', (roomId) => {
-        console.log('roomId', roomId)
         socket.on('multiplayer', msg => {
             socket.broadcast.emit('multiplayer', msg)
         })
@@ -80,11 +72,9 @@ io.of('/multiplayer').on('connection', socket => {
             socket.broadcast.emit(roomId, targets, isFound, name)
         })
         socket.on(roomId + '-target', targets => {
-            console.log('targets:', targets)
             socket.broadcast.emit(roomId + '-target', targets)
         })
         socket.on(roomId + '-connect', isConnected => {
-            console.log('isConnected:', isConnected)
             socket.broadcast.emit(roomId + '-connect', isConnected)
         })
         socket.on('disconnect', () => {
@@ -92,7 +82,6 @@ io.of('/multiplayer').on('connection', socket => {
             io.emit('players', (io.of("/").sockets.size || 0) + (io.of("/multiplayer").sockets.size || 0))
             socket.broadcast.emit(roomId + '-connect', false)
         })
-        // socket.to(roomId).emit('connected')
     })
 
     
